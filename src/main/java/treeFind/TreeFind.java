@@ -1,5 +1,7 @@
 package treeFind;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class TreeFind {
@@ -15,20 +17,22 @@ public class TreeFind {
         this.root = new Node(functions, points, 2);
     }
 
-    private void addRecursive(Node current, ArrayList<String> value, ArrayList<Integer> points, Integer level) {
+    private void addRecursive(Node current, ArrayList<String> value, ArrayList<Integer> points, Integer level, BufferedWriter bufferedWriter) throws IOException {
         current = new Node(value, points, level);
         if (value.size() > 1 && points.size() < mass.length + 1) {
             int point = minDifference(value, points);
             current.points.add(point);
             if (this.mass[point] == 0) {
                 ArrayList<String> leftSet = leftSet(value, point);
-                System.out.println(leftSet.size());
-                addRecursive(current.left, leftSet, current.points, current.level);
+                bufferedWriter.write("Выбрали точку " + point + ", осталось " + leftSet.size() + " функций" + '\n');
+                //System.out.println("Выбрали точку " + point + ", осталось " + leftSet.size() + " функций");
+                addRecursive(current.left, leftSet, current.points, current.level, bufferedWriter);
             }
             else {
                 ArrayList<String> rightSet = rightSet(value, point);
-                System.out.println(rightSet.size());
-                addRecursive(current.right, rightSet, current.points, current.level);
+                bufferedWriter.write("Выбрали точку " + point + ", осталось " + rightSet.size() + " функций" + '\n');
+                //System.out.println("Выбрали точку " + point + ", осталось " + rightSet.size() + " функций");
+                addRecursive(current.right, rightSet, current.points, current.level, bufferedWriter);
             }
         } else {
             if (current.level > this.highLevel) {
@@ -38,18 +42,20 @@ public class TreeFind {
         }
     }
 
-    public void buildTree() {
+    public void buildTree(BufferedWriter bufferedWriter) throws IOException {
         int point = minDifference(this.root.value, this.root.points);
         this.root.points.add(point);
         if (this.mass[point] == 0) {
             ArrayList<String> leftSet = leftSet(this.root.value, point);
-            System.out.println(leftSet.size());
-            addRecursive(this.root.left, leftSet, this.root.points, this.root.level);
+            bufferedWriter.write("Выбрали точку " + point + ", осталось " + leftSet.size() + " функций" + '\n');
+            //System.out.println("Выбрали точку " + point + ", осталось " + leftSet.size() + " функций");
+            addRecursive(this.root.left, leftSet, this.root.points, this.root.level, bufferedWriter);
         }
         else {
             ArrayList<String> rightSet = rightSet(this.root.value, point);
-            System.out.println(rightSet.size());
-            addRecursive(this.root.right, rightSet, this.root.points, this.root.level);
+            bufferedWriter.write("Выбрали точку " + point + ", осталось " + rightSet.size() + " функций" + '\n');
+            //System.out.println("Выбрали точку " + point + ", осталось " + rightSet.size() + " функций");
+            addRecursive(this.root.right, rightSet, this.root.points, this.root.level, bufferedWriter);
         }
     }
 

@@ -11,6 +11,7 @@ public class Program {
     public static void main(String[] args) throws IOException {
         long start = System.currentTimeMillis();
         Scheme scheme = new Scheme();
+
         // Построение множества функций неисправности (1/4 схемы)
         /*TreeSet<String> functions = scheme.generateFunctions2();
         File file = new File("functions-LeftBottom.txt");
@@ -42,7 +43,6 @@ public class Program {
         }
         bufferedWriter.close();*/
 
-
         // соединение файлов
         /*File file = new File("functionsAll.txt");
         BufferedReader bufferedReader = new BufferedReader(new FileReader("functions1.txt"));
@@ -72,7 +72,10 @@ public class Program {
         System.out.println(tree.test);*/
 
 
-        Handler.start(4);
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(new File("Input.txt")));
+        String funcNum = bufferedReader.readLine();
+
+        Handler.start(Integer.parseInt(funcNum), bufferedReader);
 
 
         long finish = System.currentTimeMillis();

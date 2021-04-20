@@ -3,21 +3,18 @@ package program.handler;
 import scheme.Scheme;
 import treeFind.TreeFind;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Handler {
-    public static void start(int n) throws IOException {
+    public static void start(int n, BufferedReader bufferedReader) throws IOException {
         if (n == 4) {
-            go6();
+            go6(bufferedReader);
         }
     }
 
-    private static void go6() throws IOException {
+    private static void go6(BufferedReader bufferedReader1) throws IOException {
         Scheme scheme = new Scheme();
         File file = new File("dummy");
         int[] def = new int[40];
@@ -25,7 +22,7 @@ public class Handler {
             def[i] = -2;
         }
 
-        Scanner scanner = new Scanner(System.in);
+        /*Scanner scanner = new Scanner(System.in);
         System.out.println("Введите номера контактов, которые вы хотите замкнуть/разомкнуть, а затем 1 или 0 для замыкания и размыкания соответственно");
         System.out.println("Для окончания ввода введите 3");
         System.out.println();
@@ -40,10 +37,20 @@ public class Handler {
             System.out.println("Введите замыкание/размыкание (0 или 1): ");
             zr = Integer.parseInt(scanner.next());
             def[num] = zr;
+        }*/
+        int num;
+        int zr;
+        while (bufferedReader1.ready()) {
+            String f = bufferedReader1.readLine();
+            String[] ff = f.split(" ");
+            num = Integer.parseInt(ff[0]);
+            def[num] = Integer.parseInt(ff[1]);
         }
+        bufferedReader1.close();
 
         //String f = scheme.functionByDefect6("x66 = 1 x1 = 0 x33 = 0");
-        String f = scheme.functionByDefect6(def);
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("Result.txt"));
+        String f = scheme.functionByDefect6(def, bufferedWriter);
         int t = 1;
         int[] mass = new int[64];
         for (int i = 0; i < 64; i++) {
@@ -93,8 +100,16 @@ public class Handler {
             functions.add(bufferedReader.readLine());
         }
         TreeFind tree = new TreeFind(functions, new ArrayList<Integer>(), f, mass);
-        tree.buildTree();
-        System.out.println(tree.highLevel);
-        System.out.println(tree.test);
+        tree.buildTree(bufferedWriter);
+        bufferedWriter.write('\n');
+        //System.out.println();
+        int test = 3 + tree.highLevel;
+        bufferedWriter.write("Длина теста = " + test + '\n');
+        //System.out.println("Длина теста = " + test);
+        bufferedWriter.write('\n');
+        //System.out.println();
+        bufferedWriter.write("Выбранные точки : " + tree.test + '\n');
+        //System.out.println("Выбранные точки : " + tree.test);
+        bufferedWriter.close();
     }
 }

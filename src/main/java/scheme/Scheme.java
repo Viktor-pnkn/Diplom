@@ -714,7 +714,7 @@ public class Scheme {
         return functions;
     }
 
-    public String functionByDefect6(int[] defect) throws IOException {
+    public String functionByDefect6(int[] defect, BufferedWriter bufferedWriter) throws IOException {
         handleDefect(defect);
         int[] function = new int[64];
         for (int i6 = 0; i6 < 2; i6++) {
@@ -730,8 +730,12 @@ public class Scheme {
                 }
             }
         }
-        System.out.println("Получившаяся функция:");
-        System.out.println(Arrays.toString(function));
+        bufferedWriter.write("Получившаяся функция:" + '\n');
+        bufferedWriter.write('\n');
+        bufferedWriter.write(Arrays.toString(function) + '\n');
+        bufferedWriter.write('\n');
+        //System.out.println("Получившаяся функция:");
+        //System.out.println(Arrays.toString(function));
         return findFunction(Arrays.toString(function));
     }
 
